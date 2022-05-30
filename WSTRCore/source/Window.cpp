@@ -51,7 +51,7 @@ void Window::create()
 		nullptr
 	);
 
-	SetWindowLongPtr(wHandle, GWLP_USERDATA, reinterpret_cast<long>(this)); //This class instance
+	SetWindowLongPtr(wHandle, GWLP_USERDATA, LONG_PTR(this)); //This class instance
 
 	devCon = GetDC(wHandle); //Device context
 	applyPixelFormat();
