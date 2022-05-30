@@ -6,6 +6,12 @@
 //Use #define WIN_CLASSIC to regain original features that are excluded here
 
 #ifndef WIN_H
+	//Post linkage
+	#pragma comment(lib, "kernel32")
+	#pragma comment(lib, "user32")
+	#pragma comment(lib, "gdi32")
+	#pragma comment(lib, "comdlg32")
+
 	#include <windows.h>
 
 	#ifndef WIN_CLASSIC
