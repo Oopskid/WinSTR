@@ -49,6 +49,8 @@ namespace WSTR
 		virtual void onMouseMove(short x, short y) {  }
 
 		HDC devCon;
+		HWND wHandle;
+
 		private:
 		static constexpr PIXELFORMATDESCRIPTOR defaultPFormat = {
 		sizeof(PIXELFORMATDESCRIPTOR),
@@ -72,7 +74,6 @@ namespace WSTR
 
 		static LRESULT CALLBACK routine(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
 		WNDCLASS winClass;
-		HWND wHandle;
 
 		const PIXELFORMATDESCRIPTOR* pForm;
 		DWORD styleEx;
