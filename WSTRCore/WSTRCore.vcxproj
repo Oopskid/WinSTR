@@ -155,6 +155,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\DataDef.h" />
     <ClInclude Include="include\WSTR.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="include\MousePointer.h" />
