@@ -30,15 +30,15 @@ Window::~Window()
 void Window::appContext(const wchar_t* appName)
 {
 	winClass.lpfnWndProc = &routine;
-	winClass.hInstance = GetModuleHandle(NULL); //Application instance
+	winClass.hInstance = GetModuleHandleW(NULL); //Application instance
 	winClass.lpszClassName = appName;
 
-	RegisterClass(&winClass); //Register this
+	RegisterClassW(&winClass); //Register this
 }
 
 void Window::create()
 {
-	wHandle = CreateWindowEx(
+	wHandle = CreateWindowExW(
 		styleEx, //Expanded window style
 		winClass.lpszClassName, //Class name
 		title.c_str(), //Window title
@@ -51,7 +51,7 @@ void Window::create()
 		nullptr
 	);
 
-	SetWindowLongPtr(wHandle, GWLP_USERDATA, LONG_PTR(this)); //This class instance
+	SetWindowLongPtrW(wHandle, GWLP_USERDATA, LONG_PTR(this)); //This class instance
 
 	devCon = GetDC(wHandle); //Device context
 	applyPixelFormat();
@@ -81,10 +81,10 @@ void Window::run()
 	while (open)
 	{
 		MSG msg;
-		while (PeekMessage(&msg, wHandle, 0, 0, PM_REMOVE))
+		while (PeekMessageW(&msg, wHandle, 0, 0, PM_REMOVE))
 		{
-			//TranslateMessage(&msg); not required/inefficient
-			DispatchMessage(&msg);
+			//TranslateMessageW(&msg); not required/inefficient
+			DispatchMessageW(&msg);
 		}
 
 		main();
@@ -125,7 +125,7 @@ size_t Window::getY()
 
 LRESULT Window::routine(HWND handle, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	Window* window = reinterpret_cast<Window*>(GetWindowLongPtr(handle, GWLP_USERDATA));
+	Window* window = reinterpret_cast<Window*>(GetWindowLongPtrW(handle, GWLP_USERDATA));
 
 	switch (message)
 	{
@@ -162,5 +162,5 @@ LRESULT Window::routine(HWND handle, UINT message, WPARAM wParam, LPARAM lParam)
 		//case WM_NCHITTEST: return HTCLIENT; //TEMP
 	}
 
-	return DefWindowProc(handle, message, wParam, lParam);
+	return DefWindowProcW(handle, message, wParam, lParam);
 }

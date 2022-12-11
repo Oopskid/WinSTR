@@ -73,7 +73,7 @@ namespace WSTR
 		};;
 
 		static LRESULT CALLBACK routine(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
-		WNDCLASS winClass;
+		WNDCLASSW winClass;
 
 		const PIXELFORMATDESCRIPTOR* pForm;
 		DWORD styleEx;
