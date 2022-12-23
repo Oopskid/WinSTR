@@ -16,15 +16,12 @@ Window::Window()
 	styleEx = WS_EX_CLIENTEDGE;
 	style = WS_OVERLAPPEDWINDOW;
 
-	x = CW_USEDEFAULT;
-	y = CW_USEDEFAULT;
-	width = 1;
-	height = 1;
+	x,y,width,height = CW_USEDEFAULT;
 }
 
 Window::~Window()
 {
-
+	
 }
 
 void Window::appContext(const wchar_t* appName)
@@ -53,6 +50,13 @@ void Window::create()
 
 	SetWindowLongPtrW(wHandle, GWLP_USERDATA, LONG_PTR(this)); //This class instance
 
+	//Fetch the module directory
+	{
+		wchar_t cDir[MAX_PATH];
+		GetModuleFileNameW(winClass.hInstance, cDir, MAX_PATH);
+		CURRENT_DIRECTORY = std::wstring(cDir);
+	}
+
 	devCon = GetDC(wHandle); //Device context
 	applyPixelFormat();
 
@@ -70,7 +74,7 @@ void Window::create(const std::wstring wTitle, size_t wWidth, size_t wHeight)
 
 void Window::show()
 {
-	ShowWindow(wHandle, SW_NORMAL);
+	ShowWindow(wHandle, SW_SHOWMAXIMIZED); // For some reason SW_SHOWNORMAL does not work on initial start
 }
 
 void Window::run()
@@ -83,7 +87,7 @@ void Window::run()
 		MSG msg;
 		while (PeekMessageW(&msg, wHandle, 0, 0, PM_REMOVE))
 		{
-			//TranslateMessageW(&msg); not required/inefficient
+			//TranslateMessage(&msg); //not required/inefficient
 			DispatchMessageW(&msg);
 		}
 
@@ -129,10 +133,10 @@ LRESULT Window::routine(HWND handle, UINT message, WPARAM wParam, LPARAM lParam)
 
 	switch (message)
 	{
+		default: return DefWindowProcW(handle, message, wParam, lParam);
 		case WM_CLOSE:
 			window->open = false;
 			break;
-
 		case WM_SIZE:
 			window->width = LOWORD(lParam);
 			window->height = HIWORD(lParam);
@@ -162,5 +166,5 @@ LRESULT Window::routine(HWND handle, UINT message, WPARAM wParam, LPARAM lParam)
 		//case WM_NCHITTEST: return HTCLIENT; //TEMP
 	}
 
-	return DefWindowProcW(handle, message, wParam, lParam);
+	return NULL;
 }

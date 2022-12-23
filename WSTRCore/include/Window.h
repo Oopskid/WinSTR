@@ -50,6 +50,7 @@ namespace WSTR
 
 		HDC devCon;
 		HWND wHandle;
+		std::wstring CURRENT_DIRECTORY;
 
 		private:
 		static constexpr PIXELFORMATDESCRIPTOR defaultPFormat = {
