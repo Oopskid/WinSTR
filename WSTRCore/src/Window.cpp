@@ -16,7 +16,7 @@ Window::Window()
 	styleEx = WS_EX_CLIENTEDGE;
 	style = WS_OVERLAPPEDWINDOW;
 
-	x,y,width,height = CW_USEDEFAULT;
+	x = y = width = height = CW_USEDEFAULT;
 }
 
 Window::~Window()
