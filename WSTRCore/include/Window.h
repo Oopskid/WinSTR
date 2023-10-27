@@ -44,13 +44,17 @@ namespace WSTR
 		virtual void onEnd() {  }
 
 		virtual void onMove() {  }
-		virtual void onKeyDown(char vkey) {  }
-		virtual void onKeyUp(char vkey) {  }
+		virtual void onKeyDown(unsigned char vkey) {  }
+		virtual void onKeyUp(unsigned char vkey) {  }
 		virtual void onMouseMove(short x, short y) {  }
 
 		HDC devCon;
 		HWND wHandle;
 		std::wstring CURRENT_DIRECTORY;
+
+		protected:
+		// Implement your custom message handler here
+		virtual LRESULT customRoutine(UINT message, WPARAM wParam, LPARAM lParam) { return S_OK; }
 
 		private:
 		static constexpr PIXELFORMATDESCRIPTOR defaultPFormat = {

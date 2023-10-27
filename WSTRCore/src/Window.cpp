@@ -87,7 +87,7 @@ void Window::run()
 		MSG msg;
 		while (PeekMessageW(&msg, wHandle, 0, 0, PM_REMOVE))
 		{
-			//TranslateMessage(&msg); //not required/inefficient
+			TranslateMessage(&msg);
 			DispatchMessageW(&msg);
 		}
 
@@ -129,42 +129,47 @@ size_t Window::getY()
 
 LRESULT Window::routine(HWND handle, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	Window* window = reinterpret_cast<Window*>(GetWindowLongPtrW(handle, GWLP_USERDATA));
-
-	switch (message)
+	if (Window* window = reinterpret_cast<Window*>(GetWindowLongPtrW(handle, GWLP_USERDATA)))
 	{
-		default: return DefWindowProcW(handle, message, wParam, lParam);
-		case WM_CLOSE:
-			window->open = false;
-			break;
-		case WM_SIZE:
-			window->width = LOWORD(lParam);
-			window->height = HIWORD(lParam);
-			window->onResize();
-			break;
-		case WM_MOVE:
-			window->x = LOWORD(lParam);
-			window->y = HIWORD(lParam);
-			window->onMove();
-			break;
-		case WM_KEYDOWN:
-			window->onKeyDown(wParam & 0xFF); //Note: virtual keycode
-			break;
-		case WM_KEYUP:
-			window->onKeyUp(wParam & 0xFF); //Note: virtual keycode
-			break;
-		//Mouse buttons (yeah I don't get it)
-		case WM_LBUTTONDOWN: window->onKeyDown(VK_LBUTTON); break;
-		case WM_LBUTTONUP: window->onKeyUp(VK_LBUTTON); break;
-		case WM_RBUTTONDOWN: window->onKeyDown(VK_RBUTTON); break;
-		case WM_RBUTTONUP: window->onKeyUp(VK_RBUTTON); break;
+		window->customRoutine(message, wParam, lParam);
 
-		case WM_MOUSEMOVE:
-			window->onMouseMove(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
-			break;
+		switch (message)
+		{
+			default: return DefWindowProcW(handle, message, wParam, lParam);
+			case WM_CLOSE:
+				window->open = false;
+				break;
+			case WM_SIZE:
+				window->width = LOWORD(lParam);
+				window->height = HIWORD(lParam);
+				window->onResize();
+				break;
+			case WM_MOVE:
+				window->x = LOWORD(lParam);
+				window->y = HIWORD(lParam);
+				window->onMove();
+				break;
+			case WM_KEYDOWN:
+				window->onKeyDown(wParam & 0xFF); //Note: virtual keycode
+				break;
+			case WM_KEYUP:
+				window->onKeyUp(wParam & 0xFF); //Note: virtual keycode
+				break;
+				//Mouse buttons (yeah I don't get it)
+			case WM_LBUTTONDOWN: window->onKeyDown(VK_LBUTTON); break;
+			case WM_LBUTTONUP: window->onKeyUp(VK_LBUTTON); break;
+			case WM_RBUTTONDOWN: window->onKeyDown(VK_RBUTTON); break;
+			case WM_RBUTTONUP: window->onKeyUp(VK_RBUTTON); break;
 
-		//case WM_NCHITTEST: return HTCLIENT; //TEMP
+			case WM_MOUSEMOVE:
+				window->onMouseMove(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+				break;
+
+				//case WM_NCHITTEST: return HTCLIENT; //TEMP
+		}
+
+		return NULL;
 	}
 
-	return NULL;
+	return DefWindowProcW(handle, message, wParam, lParam);
 }

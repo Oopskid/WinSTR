@@ -8,7 +8,7 @@ VKeys::VKeys()
 	resetKeys();
 }
 
-void VKeys::keyDown(char vkey)
+void VKeys::keyDown(unsigned char vkey)
 {
 	keyEvents[vkey] |= 0b0000101;
 
@@ -16,7 +16,7 @@ void VKeys::keyDown(char vkey)
 	onceEvents.push_back(vkey);
 }
 
-void VKeys::keyUp(char vkey)
+void VKeys::keyUp(unsigned char vkey)
 {
 	//Up flag
 	keyEvents[vkey] &= 0b11111110;
@@ -35,17 +35,17 @@ void VKeys::clearPresses()
 	}
 }
 
-bool VKeys::isKeyDown(char vkey)
+bool VKeys::isKeyDown(unsigned char vkey)
 {
 	return keyEvents[vkey] & 0b00000001;
 }
 
-bool VKeys::isKeyPress(char vkey)
+bool VKeys::isKeyPress(unsigned char vkey)
 {
 	return keyEvents[vkey] & 0b00000010;
 }
 
-bool VKeys::isKeyJustDown(char vkey)
+bool VKeys::isKeyJustDown(unsigned char vkey)
 {
 	return keyEvents[vkey] & 0b00000100;
 }
