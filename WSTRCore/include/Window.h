@@ -56,6 +56,7 @@ namespace WSTR
 		// Implement your custom message handler here
 		virtual LRESULT customRoutine(UINT message, WPARAM wParam, LPARAM lParam) { return S_OK; }
 
+		bool open;
 		private:
 		static constexpr PIXELFORMATDESCRIPTOR defaultPFormat = {
 		sizeof(PIXELFORMATDESCRIPTOR),
@@ -86,6 +87,5 @@ namespace WSTR
 
 		size_t x, y, width, height;
 		std::wstring title;
-		bool open;
 	};
 }
